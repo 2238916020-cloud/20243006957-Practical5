@@ -3,7 +3,10 @@ package com.example.practicalfive;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +22,7 @@ public class Municipality extends AppCompatActivity {
     private TextView tvInfo;
     private ImageView ivMunicipality;
     private MaterialButton btnVisit;
+    private String currentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,32 @@ public class Municipality extends AppCompatActivity {
         }
 
         applyMunicipality(name);
+
+        // Implicit Intent: ask the system to open the official website in a browser.
+        btnVisit.setOnClickListener(v -> {
+            String url = websiteFor(currentName);
+            Intent web = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            try {
+                startActivity(web);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(Municipality.this, R.string.no_browser, Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    /** Returns the official English government website for the validated municipality. */
+    private String websiteFor(String name) {
+        switch (name) {
+            case "Shanghai":
+                return "https://english.shanghai.gov.cn/";
+            case "Chongqing":
+                return "https://english.cq.gov.cn/";
+            case "Tianjin":
+                return "https://en.tj.gov.cn/";
+            case "Beijing":
+            default:
+                return "https://english.beijing.gov.cn/";
+        }
     }
 
     /**
@@ -47,6 +77,7 @@ public class Municipality extends AppCompatActivity {
      * and applies them to the UI using named Android resources.
      */
     private void applyMunicipality(String name) {
+        currentName = name;
         int colorRes;
         int imageRes;
         int summaryIndex;
