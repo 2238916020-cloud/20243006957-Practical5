@@ -7,5 +7,6 @@
     <color name="color_text_light">#FFFFFF</color>
     <color name="color_text_dark">#212121</color>
     <color name="color_default_background">#F5F5F7</color>
+    <color name="ic_launcher_background">#000000</color>
     <color name="black">#000000</color>
 </resources>
